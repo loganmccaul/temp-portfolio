@@ -21,7 +21,7 @@ body {
   font-family: 'Jost', sans-serif;
   color: var(--font, #161616);
   background:var(--background, #f4f4f4);
-  margin: 1rem 5% 2rem;
+  margin: 1rem 5% 3rem;
   max-width: 1000px;
 }
 
@@ -84,4 +84,13 @@ a {
   .card__content {
     padding: 1rem 1rem;
   }
+}
+
+footer {
+  font-size: 1.25rem;
+  margin-bottom: 4rem;
+}
+
+footer p {
+  margin-bottom: 2rem;
 }
