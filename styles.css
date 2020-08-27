@@ -14,7 +14,8 @@ body {
   font-family: 'Jost', sans-serif;
   color: var(--font, #161616);
   background:var(--background, #f4f4f4);
-  margin: 1rem 5% 3rem;
+  margin: 1rem auto 6rem;
+  padding: 0 5%;
   max-width: 1000px;
   overflow-x: hidden;
 }
