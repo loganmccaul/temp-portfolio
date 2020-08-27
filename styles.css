@@ -4,17 +4,10 @@
 }
 
 :root {
-  --background: #f4f4f4;
+  --background: #f2f4f8;
   --card: #fff;
-  --font: #161616;
-  --links: #d12771;
-}
-
-body.dark-them {
-  --background: #121619;
-  --card: #21272a;
-  --font: #f2f4f8;
-  --links: #ffafd2;
+  --font: #121619;
+  --links: #0072c3;
 }
 
 body {
@@ -86,11 +79,16 @@ a {
   }
 }
 
-footer {
-  font-size: 1.25rem;
+.work {
+  font-size: 1.5rem;
   margin-bottom: 4rem;
+  font-weight: 300;
 }
 
-footer p {
+.work p {
   margin-bottom: 2rem;
+}
+
+.hide {
+  display: none;
 }
