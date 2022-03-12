@@ -4,19 +4,19 @@
 }
 
 :root {
-  --background: #f2f4f8;
+  --background: #fefdfc;
   --card: #fff;
-  --font: #121619;
-  --links: #0072c3;
+  --font: #3e3e3e;
+  --links: #4a8c23;
 }
 
 body {
-  font-family: 'Jost', sans-serif;
+  font-family: 'Bitter', sans-serif;
   color: var(--font, #161616);
   background:var(--background, #f4f4f4);
-  margin: 1rem auto 6rem;
+  margin: 3rem auto 6rem;
   padding: 0 5%;
-  max-width: 1000px;
+  max-width: 600px;
   overflow-x: hidden;
 }
 
@@ -31,14 +31,15 @@ header:hover .note--header {
 
 .sub-header {
   white-space: nowrap;
+  font-size: 1.75rem;
 }
 
 .regular {
-  font-weight: 400;
+  font-weight: 700;
 }
 
 .thin {
-  font-weight: 200;
+  font-weight: 300;
 }
 
 a {
@@ -46,18 +47,24 @@ a {
 }
 
 .work {
-  font-size: 1.5rem;
+  font-size: 1.125rem;
   margin-bottom: 4rem;
-  font-weight: 300;
+  font-weight: 400;
+  line-height: 1.75;
 }
 
 .work p {
-  margin-bottom: 2rem;
+  margin: 1rem 0;
+}
+
+.old {
+  font-size: 1.125rem;
 }
 
 figure {
   position: relative;
   max-width: 480px;
+  margin-top: 2rem;
 }
 
 figure img {
@@ -115,31 +122,34 @@ figure:hover .note--img {
 }
 
 .note--img {
-  top: 10%;
-  left: 64%;
+  top: 63%;
+  left: 54%;
 }
 
 .note__arrow--img {
-  transform: rotate(33deg);
-  top: 58px;
-  left: -50px;
+  top: -19px;
+  left: -33px;
+  border-color: #fefdfc;
+  transform: rotate(127deg);
 }
 
 .note__line--img {
-  top: 45px;
-  left: -51px;
+  top: -5px;
+  left: -37px;
   width: 44px;
+  border-color: #fefdfc;
+  transform: rotate(63deg);
 }
 
 .note__content--img {
   top: 22px;
-left: -8px;
-transform: rotate(14deg);
-
+  left: -8px;
+  transform: rotate(-26deg);
+  color: #fefdfc;
 }
 
 .note--header {
-  top: 31px;
+  top: 68px;
   left: 263px;
 }
 
