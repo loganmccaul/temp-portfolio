@@ -1,0 +1,44 @@
+figure {
+    position: absolute;
+    width: 120px;
+    border-radius: 50%;
+    right: 0;
+    top: -25px;
+    overflow: hidden;
+    height: 120px;
+  }
+  
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  figure .img-border {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 5px solid;
+    border-right-color: var(--article-code);
+    border-top-color: var(--article-data);
+    border-left-color: var(--article-design);
+    border-bottom-color: var(--article-people);
+    top: 0px;
+    left: 0px;
+    animation: rotate 5s linear infinite;
+  }
+  
+  figure img {
+    width: 100%;
+  }
+  
+  @media(max-width: 600px) {
+    figure {
+      display: none;
+    }
+  }

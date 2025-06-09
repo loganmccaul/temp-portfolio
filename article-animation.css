@@ -1,0 +1,30 @@
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: .25s;
+}
+
+@keyframes slideOutUp {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0%);
+  }
+}
+
+::view-transition-old(root) {
+  animation-name: slideOutUp;
+}
+
+::view-transition-new(root) {
+  animation-name: slideInUp;
+}
