@@ -6,7 +6,6 @@
 
 :root {
   --background: #fefdfc;
-  --card: #fff;
   --font: #3e3e3e;
   --links: #000;
   --article-people: #ffc1cc;
@@ -82,7 +81,7 @@ header a {
 }
 
 header:hover a {
-  transform: translateX(-1rem);
+  transform: translateX(-.5rem);
 }
 
 main {
@@ -184,9 +183,9 @@ footer p {
   color: var(--font);
   text-decoration: none;
   font-weight: 600;
-  padding: .5rem 4rem .5rem 1rem;
+  padding: .5rem 4rem .5rem 2rem;
   position: relative;
-  margin-top: .5rem;
+  margin: .5rem 0 0 -2rem;
   transition: transform .1s ease-in;
 }
 
@@ -199,6 +198,7 @@ footer p {
 
 .article-link:hover {
   text-decoration: underline;
+  transform: translateX(.5rem);
 }
 
 p + .article-link {
