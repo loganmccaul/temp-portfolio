@@ -189,12 +189,12 @@ footer p {
   transition: transform .1s ease-in;
 }
 
-.article-link::after {
+/* .article-link::after {
   content:attr(data-type);
   font-weight: 300;
   position: absolute;
   right: 1rem;
-}
+} */
 
 .article-link:hover {
   text-decoration: underline;
