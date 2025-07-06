@@ -98,6 +98,40 @@ article {
   padding: 2rem;
 }
 
+p img {
+  width: 100%;
+}
+
+table {
+  table-layout: auto;
+  width: 100%;
+  background: var(--font);
+  margin-top: 1rem;
+  color: var(--background);
+  border-collapse: collapse;
+}
+
+th {
+  text-align: left;
+}
+
+th, td {
+  border: 1px solid #000;
+  padding-left: 1rem;
+  padding-top: .25rem;
+}
+
+th {
+  border-bottom: 1px solid var(--background);
+  background: var(--links);
+  font-size: 1.125rem;
+  padding-top: 1rem;
+}
+
+tr:nth-child(2n) {
+  background: #2f2f2f;
+}
+
 section {
   margin-top: 3rem;
 }
@@ -130,6 +164,28 @@ h3 {
 
 h1 + p, h2 + p, h3 + p {
   margin-top: .25rem;
+}
+
+time {
+  font-weight: 500;
+  font-size: .75rem;
+  text-transform: uppercase;
+}
+
+code {
+  display: block;
+  background: var(--font);
+  color: var(--background);
+  padding: .5rem 1rem;
+  font-family: monospace;
+  font-size: .875rem;
+  margin: 1rem 0;
+  user-select: all;
+}
+
+code::selection {
+  background: var(--article-code);
+  color: var(--links);
 }
 
 footer {
@@ -189,12 +245,12 @@ footer p {
   transition: transform .1s ease-in;
 }
 
-/* .article-link::after {
+.article-link::after {
   content:attr(data-type);
   font-weight: 300;
   position: absolute;
   right: 1rem;
-} */
+}
 
 .article-link:hover {
   text-decoration: underline;
