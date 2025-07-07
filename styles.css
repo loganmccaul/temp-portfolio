@@ -185,9 +185,10 @@ code {
 }
 
 code.inline {
-  padding: .2rem .5rem;
-  background: var(--font);
+  padding: .1rem .25rem;
+  background: rgba(0, 0, 0, .1);
   border-radius: 4px;
+  color: var(--font);
 }
 
 code::selection {
