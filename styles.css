@@ -100,6 +100,7 @@ article {
 
 p img {
   width: 100%;
+  margin-top: .5rem;
 }
 
 table {
@@ -183,6 +184,11 @@ code {
   user-select: all;
 }
 
+code.inline {
+  padding: .25rem .5rem;
+  background: var(--font);
+}
+
 code::selection {
   background: var(--article-code);
   color: var(--links);
@@ -229,6 +235,10 @@ footer p {
 .inline-img {
   display: flex;
   justify-content: space-between;
+}
+
+.inline {
+  display: inline;
 }
 
 
