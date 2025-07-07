@@ -180,6 +180,7 @@ code {
 code.inline {
   padding: .1rem .25rem;
   border-radius: 4px;
+  white-space: nowrap;
 }
 
 code::selection {
@@ -197,7 +198,7 @@ footer p {
 }
 
 /* Mobile */
-@media(max-width: 600px) {
+@media(max-width: 632px) {
   body {
     padding: 0 5%;
   }
