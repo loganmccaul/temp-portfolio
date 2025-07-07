@@ -106,9 +106,7 @@ p img {
 table {
   table-layout: auto;
   width: 100%;
-  background: var(--font);
   margin-top: 1rem;
-  color: var(--background);
   border-collapse: collapse;
 }
 
@@ -117,20 +115,20 @@ th {
 }
 
 th, td {
-  border: 1px solid #000;
+  border: 1px solid var(--font);
   padding-left: 1rem;
   padding-top: .25rem;
 }
 
 th {
-  border-bottom: 1px solid var(--background);
-  background: var(--links);
+  border-bottom: 2px solid var(--font);
+  background: rgba(0, 0, 0, .1);
   font-size: 1.125rem;
   padding-top: 1rem;
 }
 
 tr:nth-child(2n) {
-  background: #2f2f2f;
+  background: rgba(0, 0, 0, .1);
 }
 
 section {
@@ -175,8 +173,7 @@ time {
 
 code {
   display: block;
-  background: var(--font);
-  color: var(--background);
+  background: rgba(0, 0, 0, .1);
   padding: .5rem 1rem;
   font-family: monospace;
   font-size: .875rem;
@@ -186,9 +183,7 @@ code {
 
 code.inline {
   padding: .1rem .25rem;
-  background: rgba(0, 0, 0, .1);
   border-radius: 4px;
-  color: var(--font);
 }
 
 code::selection {
