@@ -185,8 +185,9 @@ code {
 }
 
 code.inline {
-  padding: .25rem .5rem;
+  padding: .2rem .5rem;
   background: var(--font);
+  border-radius: 4px;
 }
 
 code::selection {
