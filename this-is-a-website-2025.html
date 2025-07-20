@@ -1,0 +1,147 @@
+<!Doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Logan McCaul</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="styles.css" rel="stylesheet" />
+    <link href="article-animation.css" rel="stylesheet" />
+  </head>
+  <body>
+    <header>
+        <a href="index.html" class="regular">Logan McCaul</a> 
+    </header>
+    <main style="background: var(--article-code);">
+      <article>
+        <h1>This is not a web app. This is a website.</h1>
+        <time datetime="2025-07-08">July 8th, 2025</time>
+        <section>
+        <p>
+          I've attempted to build a site where I can blog numerous times. I've tried to create a custom structure with Vue. I've deployed to Github pages using Hugo. I've signed up for Medium and Substack. And yet, none of these have actually led to me writing more. I think that's because all of these options either took too much effort to set up or didn't allow for me to have the full customizability that I desired. I like writing. I like coding, and truthfully I don't need much to do either, but I do need control.
+        </p>
+        <p>
+          I'm writing this directly in VS Code in HTML. I shuold probably install a spell check extension, but really I'm not doing this to perfect my writing. I'm doing it because writing and coding is fun. I get enough of the challenging software engineering problems working with teams on web apps at work. Instead, with this website, I want to go back to what made me fall in love with web development in the first place: basic HTML, CSS, and JS.
+        </p>
+        <p>
+          Well actually there isn't any Javascript on this website. At least not at the time of me writing this. I'm not opposed to adding interactivity to my websites - I wrote a few scripts for <a target="_blank" href="https://loganandabby.com">my wedding website</a> to build a draggable, polaroid-esque, photo gallery - but for this website I want to see how far HTML, CSS, and some file organization can take me. And with some of the latest techniques the basics can take you pretty far.
+        </p>
+        </section>
+        <section>
+          <h2>View Transition API</h2>
+          <p>
+            If you are reading this on any browser besides Firefox (Firefox is my browser of choice btw) then you may be surprised there isn't any JS handling page transitions. If you click on my name at the top of this article you'll see this page slide out to the left and the homepage slide in behind it. You just navigated to a new page. Not like in the SPA way, well like in the SPA way, but only visually.
+          </p>
+          <p>
+          This site uses the <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API">view transition API</a> to animate page loads. Using CSS you can define a transition out and a transition in animation for any element on the page. I have two. One in my <code class="inline">styles.css</code> file that enables view transitions and handles the slide left of the articles on navigation.
+            <code>
+              /* Enables view transitions on this page */<br />
+              /* Must also nbe included on the navigating page */<br />
+              @view-transition {<br />
+                &nbsp;navigation: auto;<br />
+              }<br />
+              <br />
+              /* Removes transitions for those that prefer reduced motion */<br />
+              @media (prefers-reduced-motion: reduce) {<br />
+                &nbsp;@view-transition {<br />
+                  &nbsp;&nbsp;navigation: none;<br />
+                  &nbsp;}<br />
+              }<br />
+              <br />
+              @keyframes slideOutLeft {<br />
+                &nbsp;from {<br />
+                  &nbsp;&nbsp;transform: translateX(0%);<br />
+                  &nbsp;}<br />
+                  &nbsp;to {<br />
+                    &nbsp;&nbsp;transform: translateX(-100%);<br />
+                  &nbsp;}<br />
+              }<br />
+              <br />
+              @keyframes slideInLeft {<br />
+                &nbsp;from {<br />
+                  &nbsp;&nbsp;transform: translateX(100%);<br />
+                &nbsp;}<br />
+                &nbsp;to {<br />
+                    &nbsp;&nbsp;transform: translateX(0%);<br />
+                &nbsp;}<br />
+              }
+              <br />
+              ::view-transition-group(root) {<br />
+                &nbsp;animation-duration: .25s;<br />
+                &nbsp;animation-timing-function: ease-in-out;<br />
+              }<br />
+              <br />
+              ::view-transition-old(root) {<br />
+                &nbsp;animation-name: slideOutLeft;<br />
+              }<br />
+              <br />
+              ::view-transition-new(root) {<br />
+                &nbsp;animation-name: slideInLeft;<br />
+              }<br />
+            </code>
+          </p>
+          <p>
+            The <code class="inline">styles.css</code> file is loaded on every page and contains the base level element styles. So every page will slide left on navigation unless overridden. If you navigate back to an article you'll notice that they slide up instead of left. This is because articles contain an additional file, <code class="inline">article-animation.css</code> that overrides the base slide left animation with a slide up animation.
+            <code>
+              @keyframes slideOutUp {<br />
+                &nbsp;from {<br />
+                  &nbsp;&nbsp;transform: translateY(0%);<br />
+                &nbsp;}<br />
+                &nbsp;to {<br />
+                  &nbsp;&nbsp;transform: translateY(-100%);<br />
+                &nbsp;}<br />
+              }<br />
+              <br />
+              @keyframes slideInUp {<br />
+                &nbsp;from {<br />
+                  &nbsp;&nbsp;transform: translateY(100%);<br />
+                &nbsp;}<br />
+                &nbsp;to {<br />
+                    &nbsp;&nbsp;transform: translateY(0%);<br />
+                  &nbsp;}<br />
+              }<br />
+              <br />
+              ::view-transition-old(root) {<br />
+                &nbsp;animation-name: slideOutUp;<br />
+              }<br />
+              <br />
+              ::view-transition-new(root) {<br />
+                &nbsp;animation-name: slideInUp;<br />
+              }
+            </code>
+          </p>
+          <p>
+            On this page we override the slide left animations with the slide up animations yet if I click a link back to the homepage the article slides left. This, to me, is the trickiest part of the view transition API.
+          </p>
+          <p>
+            The view transition API works by taking a snapshop of the animated element and keeping that element rendered on the DOM when the new page loads. In both of our examples the element we reference is <code class="inline">root</code> which refers to the entire DOM. So when you navigate back to the homepage the article DOM remains rendered, but the only view transition CSS code remaining is the slide left one.
+          </p>
+          <p>
+            The suffixes <code class="inline">-old</code> and <code class="inline">-new</code> refer to the old and new DOMs. Or specifically in this case, <code class="inline">::view-transition-old(root)</code> in <code class="inline">styles.css</code> refers to the article DOM that is still rendered when the homepage loads. The article DOM and the homepage then animate at the same time giving the appearance that the new page is sliding in.
+          </p>
+          <p>
+            In reality you just followed a link like you would on any website. MDN (ironically) has some great docs on <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API/Using#basic_mpa_view_transition">multipage app view transitions</a> if you are interested in learning more.
+          </p>
+        </section>
+        <section>
+          <h2>Data Attributes in CSS</h2>
+        </section>
+        <section>
+          <h2>Reusable CSS</h2>
+        </section>
+        <section>
+          <h2>Downsides</h2>
+        </section>
+      </article>
+    </main>
+    <footer>
+      <p>
+        To learn more about me and my work, contact me by
+        <a href="mailto:loganmccaul@gmail.com">email</a> or add me on
+        <a target="_blank" href="https://www.linkedin.com/in/logan-mccaul-12460b68">LinkedIn</a>.
+      </p>
+    </footer>
+  </body>
+</html>
