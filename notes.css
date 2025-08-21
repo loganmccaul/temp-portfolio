@@ -1,132 +1,129 @@
-
 .corner-trigger {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 50px;
-    height: 50px;
-  }
-  
-  .corner-trigger:hover .note--corner {
-    opacity: 1;
-  }
-  
-  .note {
-    font-family:  'Nothing You Could Do', cursive;
-    position: absolute;
-    transition: opacity 250ms ease-in;
-    opacity: 0;
-  }
-  
-  .note__arrow {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border-left: 1px solid var(--font, #161616);
-    border-bottom: 1px solid var(--font, #161616);
-    border-radius: 18%;
-  }
-  
-  .note__line {
-    position: absolute;
-    height: 15px;
-    border-radius: 50%;
-    border-bottom: 1px solid;
-    border-color: transparent transparent var(--font, #161616) transparent;
-    transform: rotate(-23deg);
-  
-  }
-  
-  .note__content {
-    position: absolute;
-    top: 14px;
-    left: 10px;
-    font-size: 1.25rem;
-    white-space: nowrap;
-  }
-  
-  .note--img {
-    top: 63%;
-    left: 54%;
-  }
-  
-  .note__arrow--img {
-    top: -19px;
-    left: -33px;
-    border-color: #fefdfc;
-    transform: rotate(127deg);
-  }
-  
-  .note__line--img {
-    top: -5px;
-    left: -37px;
-    width: 44px;
-    border-color: #fefdfc;
-    transform: rotate(63deg);
-  }
-  
-  .note__content--img {
-    top: 22px;
-    left: -8px;
-    transform: rotate(-26deg);
-    color: #fefdfc;
-  }
-  
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+}
+
+.corner-trigger:hover .note--corner {
+  opacity: 1;
+}
+
+.note {
+  font-family: 'Nothing You Could Do', cursive;
+  position: absolute;
+  transition: opacity 250ms ease-in;
+  opacity: 0;
+}
+
+.note__arrow {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border-left: 1px solid var(--font, #161616);
+  border-bottom: 1px solid var(--font, #161616);
+  border-radius: 18%;
+}
+
+.note__line {
+  position: absolute;
+  height: 15px;
+  border-radius: 50%;
+  border-bottom: 1px solid;
+  border-color: transparent transparent var(--font, #161616) transparent;
+  transform: rotate(-23deg);
+
+}
+
+.note__content {
+  position: absolute;
+  top: 14px;
+  left: 10px;
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
+.note--img {
+  top: 63%;
+  left: 54%;
+}
+
+.note__arrow--img {
+  top: -19px;
+  left: -33px;
+  border-color: #fefdfc;
+  transform: rotate(127deg);
+}
+
+.note__line--img {
+  top: -5px;
+  left: -37px;
+  width: 44px;
+  border-color: #fefdfc;
+  transform: rotate(63deg);
+}
+
+.note__content--img {
+  top: 22px;
+  left: -8px;
+  transform: rotate(-26deg);
+  color: #fefdfc;
+}
+
+.note--header {
+  top: 78px;
+  left: 63px;
+}
+
+@media(max-width: 1000px) {
   .note--header {
-    top: 68px;
-    left: 63px;
+    display: none;
   }
-  
-  @media(max-width: 1000px) {
-    .note--header {
-      display: none;
-    }
-  }
-  
-  .note__arrow--header {
-    transform: rotate(113deg);
-    top: 9px;
-    left: -22px;
-  }
-  
-  .note__line--header {
-    top: 11px;
-    left: -18px;
-    width: 27px;
-    transform: rotate(30deg);
-  }
-  
-  .note--corner {
-    top: -68px;
-    right: 240px;
-  }
-  
-  .note__content--corner {
-    transform: rotate(-20deg);
-    top: 17px;
-    left: 42px;
-  }
-  
-  .note__arrow--corner {
-    transform: rotate(-64deg);
-    top: 44px;
-    left: 194px;
-  }
-  
-  .note__line--corner {
-    top: 38px;
-    left: 176px;
-    width: 27px;
-    transform: rotate(-139deg);
-  }
+}
 
-  figure:hover .note--img {
-    opacity: 1;
-  }
+.note__arrow--header {
+  transform: rotate(113deg);
+  top: 9px;
+  left: -22px;
+}
 
-  
-header h1:hover ~ .note--header {
-    opacity: 1;
-  }
-  
-  
+.note__line--header {
+  top: 11px;
+  left: -18px;
+  width: 27px;
+  transform: rotate(30deg);
+}
+
+.note--corner {
+  top: -68px;
+  right: 240px;
+}
+
+.note__content--corner {
+  transform: rotate(-20deg);
+  top: 17px;
+  left: 42px;
+}
+
+.note__arrow--corner {
+  transform: rotate(-64deg);
+  top: 44px;
+  left: 194px;
+}
+
+.note__line--corner {
+  top: 38px;
+  left: 176px;
+  width: 27px;
+  transform: rotate(-139deg);
+}
+
+figure:hover .note--img {
+  opacity: 1;
+}
+
+
+header h1:hover~.note--header {
+  opacity: 1;
+}

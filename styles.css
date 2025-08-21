@@ -30,6 +30,7 @@
   from {
     transform: translateX(0%);
   }
+
   to {
     transform: translateX(-100%);
   }
@@ -39,6 +40,7 @@
   from {
     transform: translateX(100%);
   }
+
   to {
     transform: translateX(0%);
   }
@@ -62,7 +64,7 @@
 body {
   font-family: 'Bitter', sans-serif;
   color: var(--font, #161616);
-  background:var(--background, #f4f4f4);
+  background: var(--background, #f4f4f4);
   margin: 3rem auto;
   max-width: 600px;
 }
@@ -110,8 +112,9 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
-  border: 1px solid rgba(0,0,0,.25);
+th,
+td {
+  border: 1px solid rgba(0, 0, 0, .25);
   padding: .25rem .5rem 0;
 }
 
@@ -142,11 +145,15 @@ a:hover {
 }
 
 ul {
- margin-left: 1rem;
+  margin-left: 1rem;
 }
 
 li {
- padding-left: .5rem;
+  padding-left: .5rem;
+}
+
+h1 {
+  line-height: 1.5;
 }
 
 h2 {
@@ -157,7 +164,9 @@ h3 {
   font-size: 1rem;
 }
 
-h1 + p, h2 + p, h3 + p {
+h1+p,
+h2+p,
+h3+p {
   margin-top: .25rem;
 }
 
@@ -189,7 +198,7 @@ code::selection {
 }
 
 footer {
- margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 footer p {
@@ -202,6 +211,7 @@ footer p {
   body {
     padding: 0 5%;
   }
+
   article {
     padding: 2rem 5%;
   }
@@ -250,7 +260,7 @@ footer p {
 }
 
 .article-link::after {
-  content:attr(data-type);
+  content: attr(data-type);
   font-weight: 300;
   position: absolute;
   right: 1rem;
@@ -261,7 +271,7 @@ footer p {
   transform: translateX(.5rem);
 }
 
-p + .article-link {
+p+.article-link {
   margin-bottom: 2rem;
 }
 

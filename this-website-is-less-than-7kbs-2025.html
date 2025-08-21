@@ -1,0 +1,96 @@
+<!Doctype html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Logan McCaul</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nothing+You+Could+Do&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet" />
+  <link href="article-animation.css" rel="stylesheet" />
+</head>
+
+<body>
+  <header>
+    <a href="index.html" class="regular">Logan McCaul</a>
+  </header>
+  <main style="background: var(--article-code);">
+    <article>
+      <h1>This website is less than 7 KBs</h1>
+      <time datetime="2025-07-08">August 20th, 2025</time>
+      <section>
+        <p>
+          I've attempted to build a site where I can blog numerous times. I've tried to create a custom structure with
+          Vue. I've deployed to Github pages using Hugo. I've signed up for Medium and Substack. And yet, none of these
+          have actually led to me writing more. I think that's because all of these options either took too much effort
+          to set up or didn't allow for me to have the full customizability that I desired. I like writing. I like
+          coding, and truthfully I don't need much to do either, but I do need control.
+        </p>
+        <p>
+          I'm writing this directly in VS Code in HTML. I shuold probably install a spell check extension, but really
+          I'm not doing this to perfect my writing. I'm doing it because writing and coding is fun. I get enough of the
+          challenging software engineering problems working with teams on web apps at work. Instead, with this website,
+          I want to go back to what made me fall in love with web development in the first place: basic HTML, CSS, and
+          JS.
+        </p>
+        <p>
+          Well actually there isn't any Javascript on this website. At least not at the time of me writing this. I'm not
+          opposed to adding interactivity to my websites - I wrote a few scripts for <a target="_blank"
+            href="https://loganandabby.com">my wedding website</a> to build a draggable, polaroid-esque, photo gallery -
+          but for this website I want to see how far HTML, CSS, and some file organization can take me. And with some of
+          the latest techniques the HTML and CSS can take interactivty pretty far. I can even do page transitions using
+          the <a target="_blank" href="view-transition-api-2025.html">CSS view transition API.</a>
+        </p>
+        <p>
+          And this isn't one of those blog posts with the latest hacks to make your website faster. It's just simple
+          HTML and CSS and HTML and CSS is fast. In fact if you avoid JS frameworks, CSS frameworks, testing, builds,
+          package management, CI/CD pipelines, pull requests, and everything else that goes into a development lifecycle
+          then the code is fast, both for the coder and the end user. The problem is that's not very sustainable for a
+          business, or a team, or any piece of code that actually matters. Luckily, this is just some dude's musings so
+          without much effort this website is less than 7 KBs.
+        </p>
+      </section>
+      <section>
+        <h2>Downsides to not using a framework</h2>
+        <p>
+          There's really two major downsides to forgoing a framework. One is technical and annoying. The other is a bit
+          more ephemereal.
+        </p>
+        <p>
+          The first major downside is that I do have two components that are repeated throughout this website. Article
+          page headers (my name and link back to home) and page footers (my contact info). If I wanted to change these I
+          have two options, go to each article I've written or ask Claude Code to update each article. So far I haven't
+          had to put these to the test. When I want to write something new I duplicate a previous article, change the
+          name, delete the content, add a link on the home page, and then start writing. We'll see how long this lasts.
+          There's a very real world where once I want to change the page header or footer I spend the time to abstract
+          it into a Javascript script that inserts both into the DOM and loads on each page, potentially adding my first
+          piece of JS code. I also have an (unserious) theory that DRY development patterns aren't as important anymore
+          with the introduction of LLM
+          coding agents. Can they just do the dirty
+          work to keep repeated code up to date? For now, I've kept both simple and I don't plan to change my name or
+          contact info any time soon.
+        </p>
+        <p>
+          The second major downside is that this website doesn't showcase any of my 10+ years of developing complex
+          customer facing experiences using a variety of frameworks and tools. I'm in management now so to that may not
+          be too important, but since this site exists as a hybrid portfolio and blog I sometimes worry that it doesn't
+          properly represent the technical skills I still have. However, I often remind myself that what I expect
+          from the staff engineers reporting to me is that they are making proper technical tradeoffs. Based on the
+          (self defined) requirements for this website, going with just HTML and CSS might actually be the smart choice.
+          Afterall, this website is less than 7 KBs and I really put no effort into performance.
+        </p>
+      </section>
+    </article>
+  </main>
+  <footer>
+    <p>
+      To learn more about me and my work, contact me by
+      <a href="mailto:loganmccaul@gmail.com">email</a> or add me on
+      <a target="_blank" href="https://www.linkedin.com/in/logan-mccaul-12460b68">LinkedIn</a>.
+    </p>
+  </footer>
+</body>
+
+</html>
