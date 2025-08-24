@@ -14,11 +14,35 @@
   --article-data: #c1ffc8;
 }
 
+/* Fonts */
 @font-face {
   font-family: "Bitter";
+  font-style: normal;
+  font-weight: 400;
   src:
     local("Bitter"),
-    url("Bitter-VariableFont_wght.ttf");
+    url("typefaces/bitter-latin-400-normal.woff2") format('woff2'),
+    url("typefaces/bitter-latin-400-normal.woff") format('woff');
+}
+
+@font-face {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 300;
+  src:
+    local("Bitter"),
+    url("typefaces/bitter-latin-300-normal.woff2") format('woff2'),
+    url("typefaces/bitter-latin-300-normal.woff") format('woff');
+}
+
+@font-face {
+  font-family: "Bitter";
+  font-style: normal;
+  font-weight: 600;
+  src:
+    local("Bitter"),
+    url("typefaces/bitter-latin-600-normal.woff2") format('woff2'),
+    url("typefaces/bitter-latin-600-normal.woff") format('woff');
 }
 
 /* Page Transitions */
