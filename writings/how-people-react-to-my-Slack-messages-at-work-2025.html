@@ -1,0 +1,2428 @@
+<!Doctype html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ChatGPT says the reactions I get on Slack indicate that I'm helpful and action-oriented</title>
+    <link rel="preload" href="typefaces/bitter-latin-300-normal.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous" />
+    <link rel="preload" href="typefaces/bitter-latin-400-normal.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous" />
+    <link rel="preload" href="typefaces/bitter-latin-600-normal.woff2" as="font" type="font/woff2"
+        crossorigin="anonymous" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../images/favicon-32x32.png">
+    <link href="../styles.css" rel="stylesheet" />
+    <link href="article-animation.css" rel="stylesheet" />
+    <style>
+        :root {
+            --background: #f4f4f4;
+            --text: #161616;
+            --text-secondary: #525252;
+            --grid: rgba(0, 0, 0, .1);
+            --bar: rgba(0, 0, 0, .7);
+            --hover: #393939;
+            --container: 400px;
+            --link: #8a3ffc;
+        }
+
+        img {
+            width: 1rem;
+        }
+
+        /** BARCHART */
+        .barchart {
+            width: 256px;
+            min-height: 900px;
+            position: relative;
+            transition: all 300ms ease-out;
+            margin: 2rem auto;
+        }
+
+        .scale {
+            font-family: monospace;
+            font-weight: 400;
+            font-size: .675rem;
+            display: flex;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid var(--grid);
+            padding-bottom: 12px;
+            width: 300px;
+            color: var(--text-secondary);
+        }
+
+        .scale span {
+            transform: translateX(-50%);
+            min-width: 64px;
+            text-align: center;
+        }
+
+        .grid {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px);
+            background-size: 64px 100%;
+            pointer-events: none;
+            border-right: 1px solid var(--grid);
+
+        }
+
+        .bar {
+            background: var(--bar);
+            position: relative;
+            min-width: 1px;
+            max-height: 36px;
+            min-height: 30px;
+            margin-top: 8px;
+            font-size: 1.5rem;
+        }
+
+        .bar::after {
+            content: attr(data-count);
+            font-family: monospace;
+            font-weight: 700;
+            font-size: .75rem;
+            color: var(--text-secondary);
+            position: absolute;
+            right: 0rem;
+            display: block;
+            transform: translate(125%, 50%);
+        }
+
+        .reaction {
+            position: absolute;
+            left: -34px;
+            cursor: default;
+            max-width: 26px;
+            height: 26px;
+            font-size: 22px;
+        }
+
+        .reaction img {
+            width: 100%;
+            display: block;
+            position: relative;
+            top: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <a href="../index.html" class="regular">Logan McCaul</a>
+    </header>
+    <main style="background: var(--article-data);">
+        <article>
+            <h1>How people react to my Slack messages at work</h1>
+            <time datetime="2025-12-12">December 12th, 2025</time>
+            <section>
+                <p>
+                    I recently built a small app called <a href="https://reaction-count.vercel.app/">Reaction Count</a>
+                    that pulls all the reactions I've received on Slack. I switched to management about 3 years ago and
+                    missed being able
+                    to see my developer stats at the end of the year like lines added, files changed, etc... My job is
+                    now heavily tied to
+                    my communication in looking a how my peers and reports respond to my messages may give me
+                    interesting insights into my
+                    communication. Ultimately, I didn't learn a ton of new information, but I did get a chance to write
+                    some code again, play with
+                    the Slack APIs, and try out Vercel hosting. I did paste the results in ChatGPT though and asked it
+                    what it says about me. AI, which is not at all known for being overly positive, nailed a summary of
+                    my Slack communication.
+                </p>
+                <div class="ai">
+                    <h2>TL;DR — What your reactions say</h2>
+                    <ul>
+                        <li>
+                            <strong>Helpful &amp; action‑oriented.</strong> The top reactions are
+                            <strong>👍(1,351)</strong>
+                            and
+                            <strong>✅(164)</strong>
+                            —classic “agree/ack/looks good” signals—plus
+                            <strong>🙌(362)</strong>
+                            and
+                            <strong>🎉(123)</strong>
+                            for celebrations. That pattern strongly suggests your updates are <em>useful, clear, and
+                                often about wins/shipments</em>.
+                        </li>
+                        <li>
+                            <strong>People thank you a lot.</strong> “Thank‑you” themed reactions (e.g.,
+                            <img src="https://emoji.slack-edge.com/T030V20UZ70/thanksgif/5aac3f1b1a2b3d76.gif"
+                                alt="thanksgif">,
+                            <img src="https://emoji.slack-edge.com/T030V20UZ70/thankyou-5858/acde18c2c3dcb919.png"
+                                alt="thankyou5858">,
+                            <img src="https://emoji.slack-edge.com/T030V20UZ70/thankyou/b4b144f0236513bc.png"
+                                alt="thankyou">) total <strong>~728</strong>—a standout.
+                            That’s a
+                            hallmark of someone unblocking teammates and sharing knowledge.
+                        </li>
+                        <li>
+                            <strong>High positivity, low confusion.</strong> By categorizing all reactions,
+                            <strong>~96%</strong> of “opinionated” reactions (positive vs. negative) are positive;
+                            “Concern/
+                            Confusion” (e.g., <img data-emoji="❓" class="an1" alt="❓" aria-label="❓" draggable="false"
+                                src="https://fonts.gstatic.com/s/e/notoemoji/16.0/2753/72.png" loading="lazy">/
+                            <img data-emoji="🤔" class="an1" alt="🤔" aria-label="🤔" draggable="false"
+                                src="https://fonts.gstatic.com/s/e/notoemoji/16.0/1f914/72.png" loading="lazy">) and
+                            “Negative”
+                            (e.g., <img data-emoji="👎" class="an1" alt="👎" aria-label="👎" draggable="false"
+                                src="https://fonts.gstatic.com/s/e/notoemoji/16.0/1f44e/72.png" loading="lazy">) are
+                            <strong>small (143 total)</strong>. This implies your messages are <em>clear and
+                                low‑drama</em>.
+                        </li>
+                        <li>
+                            <strong>Announcement vibe that gets attention.</strong>
+                            <strong><img data-emoji="👀" class="an1" alt="👀" aria-label="👀" draggable="false"
+                                    src="https://fonts.gstatic.com/s/e/notoemoji/16.0/1f440/72.png" loading="lazy">
+                                (231)</strong>
+                            is a top‑5 reaction, often used for <em>“heads‑up: watching/curious”</em>. That matches an
+                            <em>announcement or status update</em> style that people pay attention to.
+                        </li>
+                        <li>
+                            <strong>Culture carrier with lots of custom emoji.</strong> You’ve got <strong>531
+                                unique</strong>
+                            reactions across <strong>5,928</strong> total—huge variety with a “long tail,” but the top
+                            10
+                            still
+                            account for <strong>~56%</strong> of all reactions. Translation: your org uses a fun emoji
+                            culture,
+                            yet people converge on a few standards for feedback.
+                        </li>
+                    </ul>
+                </div>
+                <p>
+                    Thanks ChatGPT!
+                </p>
+            </section>
+            <section>
+                <h2>My Reaction Counts</h2>
+                <p>Here's all 5,928 reactions my messags on Slack have received in my 5 years at HEB. This include all
+                    DMs, all messages I've sent in private channels, and messages I've sent in public channels in the
+                    past year (HEB's retention policy).</p>
+                <div id="barchart" class="barchart">
+                    <div class="scale" data-max="160">
+                        <span>0</span>
+                        <span>375</span>
+                        <span>750</span>
+                        <span>1,125</span>
+                        <span>1,500</span>
+                    </div>
+                    <div class="grid"></div>
+                    <div class="bars">
+                        <div class="bar" data-name="👍" data-count="1,351" style="width: 230.57066666666665px">
+                            <div class="reaction">👍</div>
+                        </div>
+                        <div class="bar" data-name="🙌" data-count="362" style="width: 61.78133333333333px">
+                            <div class="reaction">🙌</div>
+                        </div>
+                        <div class="bar" data-name="thanksgif" data-count="327" style="width: 55.808px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thanksgif/5aac3f1b1a2b3d76.gif"></div>
+                        </div>
+                        <div class="bar" data-name="❤️" data-count="276" style="width: 47.104px">
+                            <div class="reaction">❤️</div>
+                        </div>
+                        <div class="bar" data-name="👀" data-count="231" style="width: 39.424px">
+                            <div class="reaction">👀</div>
+                        </div>
+                        <div class="bar" data-name="thankyou-5858" data-count="203" style="width: 34.64533333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thankyou-5858/acde18c2c3dcb919.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="💯" data-count="193" style="width: 32.93866666666666px">
+                            <div class="reaction">💯</div>
+                        </div>
+                        <div class="bar" data-name="✅" data-count="164" style="width: 27.98933333333333px">
+                            <div class="reaction">✅</div>
+                        </div>
+                        <div class="bar" data-name="🎉" data-count="123" style="width: 20.992px">
+                            <div class="reaction">🎉</div>
+                        </div>
+                        <div class="bar" data-name="yay" data-count="87" style="width: 14.847999999999999px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yay/ac2e910bf0e644f6.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🍭" data-count="86" style="width: 14.677333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lol/042df7bd64fe0fb1.png"></div>
+                        </div>
+                        <div class="bar" data-name="happy-bear" data-count="80" style="width: 13.653333333333332px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/happy-bear/b53c12ea3d7fab41.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="thankyou" data-count="75" style="width: 12.799999999999999px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thankyou/b4b144f0236513bc.png"></div>
+                        </div>
+                        <div class="bar" data-name="😂" data-count="68" style="width: 11.605333333333332px">
+                            <div class="reaction">😂</div>
+                        </div>
+                        <div class="bar" data-name="awesome" data-count="54" style="width: 9.216px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/awesome/cf16421c81d35717.png"></div>
+                        </div>
+                        <div class="bar" data-name="hmmyes" data-count="50" style="width: 8.533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hmmyes/4bc3160fcca8ff1e.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🙏" data-count="46" style="width: 7.850666666666666px">
+                            <div class="reaction">🙏</div>
+                        </div>
+                        <div class="bar" data-name="😆" data-count="39" style="width: 6.656px">
+                            <div class="reaction">😆</div>
+                        </div>
+                        <div class="bar" data-name="thankyou1" data-count="38" style="width: 6.485333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thankyou1/7cd152e5d2665422.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🥳" data-count="38" style="width: 6.485333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ty/bb835547a0172ba4.png"></div>
+                        </div>
+                        <div class="bar" data-name="😅" data-count="37" style="width: 6.314666666666667px">
+                            <div class="reaction">😅</div>
+                        </div>
+                        <div class="bar" data-name="saluting_face" data-count="34" style="width: 5.802666666666666px">
+                            <div class="reaction">saluting_face</div>
+                        </div>
+                        <div class="bar" data-name="cool-doge" data-count="33" style="width: 5.632px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cool-doge/9d7956e6eb97a41f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="this-" data-count="32" style="width: 5.461333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/this-/9fad3020d8a4abe3.png"></div>
+                        </div>
+                        <div class="bar" data-name="party-blob" data-count="29" style="width: 4.949333333333334px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-blob/152501296b3552a7.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😭" data-count="29" style="width: 4.949333333333334px">
+                            <div class="reaction">😭</div>
+                        </div>
+                        <div class="bar" data-name="noproblem" data-count="28" style="width: 4.778666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/noproblem/e35f48e2aad5c865.gif"></div>
+                        </div>
+                        <div class="bar" data-name="party-nice" data-count="26" style="width: 4.437333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-nice/0e020ab18706e594.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="blob_cheer" data-count="24" style="width: 4.096px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_cheer/36f55e1ea50730fc.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="lol2" data-count="23" style="width: 3.925333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lol2/c492f5705655beb7.png"></div>
+                        </div>
+                        <div class="bar" data-name="wow" data-count="23" style="width: 3.925333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/wow/7c72e86cd081d498.gif"></div>
+                        </div>
+                        <div class="bar" data-name="thank-you-1" data-count="21" style="width: 3.584px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thank-you-1/26d128f59f373006.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="blob-salute" data-count="21" style="width: 3.584px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-salute/aabd7b0b9049ea31.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="☝" data-count="20" style="width: 3.413333333333333px">
+                            <div class="reaction">☝</div>
+                        </div>
+                        <div class="bar" data-name="🤔" data-count="20" style="width: 3.413333333333333px">
+                            <div class="reaction">🤔</div>
+                        </div>
+                        <div class="bar" data-name="nod-yes" data-count="20" style="width: 3.413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nod-yes/61cc7b8df2cf2b2f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="thistbh" data-count="20" style="width: 3.413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thistbh/511a56c8a71a94a5.png"></div>
+                        </div>
+                        <div class="bar" data-name="melting_face" data-count="20" style="width: 3.413333333333333px">
+                            <div class="reaction">melting_face</div>
+                        </div>
+                        <div class="bar" data-name="plus1" data-count="19" style="width: 3.2426666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/plus1/76e71421607c6330.png"></div>
+                        </div>
+                        <div class="bar" data-name="party-yes" data-count="19" style="width: 3.2426666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-yes/0e020ab18706e594.gif"></div>
+                        </div>
+                        <div class="bar" data-name="raised-hands-celebrate" data-count="18" style="width: 3.072px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/raised-hands-celebrate/1ce93d1a84d5abef.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="blobdance" data-count="18" style="width: 3.072px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blobdance/d7e5a35dca0f1ef1.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🔥" data-count="18" style="width: 3.072px">
+                            <div class="reaction">🔥</div>
+                        </div>
+                        <div class="bar" data-name="party-guy" data-count="18" style="width: 3.072px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-guy/57693f58f1492a3f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="thank_you" data-count="18" style="width: 3.072px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thank_you/dc6e7d9782c096c4.png"></div>
+                        </div>
+                        <div class="bar" data-name="🇮🇩" data-count="17" style="width: 2.901333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/done/8177206e1f733b8f.png"></div>
+                        </div>
+                        <div class="bar" data-name="lolsob" data-count="17" style="width: 2.901333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lolsob/b915ba8e0be2a2a1.png"></div>
+                        </div>
+                        <div class="bar" data-name="😇" data-count="16" style="width: 2.7306666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/no/29270f6ebef0dd32.png"></div>
+                        </div>
+                        <div class="bar" data-name="😍" data-count="16" style="width: 2.7306666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yes/29270f6ebef0dd32.png"></div>
+                        </div>
+                        <div class="bar" data-name="rolling_on_the_floor_laughing" data-count="16"
+                            style="width: 2.7306666666666666px">
+                            <div class="reaction">rolling_on_the_floor_laughing</div>
+                        </div>
+                        <div class="bar" data-name="➕" data-count="15" style="width: 2.56px">
+                            <div class="reaction">➕</div>
+                        </div>
+                        <div class="bar" data-name="👌" data-count="15" style="width: 2.56px">
+                            <div class="reaction">👌</div>
+                        </div>
+                        <div class="bar" data-name="true" data-count="14" style="width: 2.389333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/true/5cadaf9b4d5bee83.png"></div>
+                        </div>
+                        <div class="bar" data-name="💪" data-count="13" style="width: 2.2186666666666666px">
+                            <div class="reaction">💪</div>
+                        </div>
+                        <div class="bar" data-name="get-well-soon" data-count="13" style="width: 2.2186666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/get-well-soon/fa8e9ffd6fb0e42d.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="graphql-logo" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/graphql-logo/785f7415f42e9284.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="noprobllama" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/noprobllama/08c516178e5a19f5.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="lolol" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lolol/742b4006faa413f4.gif"></div>
+                        </div>
+                        <div class="bar" data-name="acknowledge" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/acknowledge/b6f33a367528ed42.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="goodluck" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/goodluck/9e0de93d54604cfe.gif"></div>
+                        </div>
+                        <div class="bar" data-name="this" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/this/28991bf43938123f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="approved" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/approved/9abd1acb91813ba0.png"></div>
+                        </div>
+                        <div class="bar" data-name="dead" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/dead/c7af4c311016244b.png"></div>
+                        </div>
+                        <div class="bar" data-name="plus_one_+1" data-count="12" style="width: 2.048px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/plus_one_%252B1/f28ea229f1bce248.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="❓" data-count="11" style="width: 1.8773333333333333px">
+                            <div class="reaction">❓</div>
+                        </div>
+                        <div class="bar" data-name="the_horns" data-count="11" style="width: 1.8773333333333333px">
+                            <div class="reaction">the_horns</div>
+                        </div>
+                        <div class="bar" data-name="thank-you-pink" data-count="11" style="width: 1.8773333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thank-you-pink/53cc189ea6d88eb9.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🥳" data-count="11" style="width: 1.8773333333333333px">
+                            <div class="reaction">🥳</div>
+                        </div>
+                        <div class="bar" data-name="yess" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yess/5366bf41ac990dbc.png"></div>
+                        </div>
+                        <div class="bar" data-name="nice-neon" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nice-neon/31644c220e481865.gif"></div>
+                        </div>
+                        <div class="bar" data-name="same" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/same/a0721ca650635a3a.png"></div>
+                        </div>
+                        <div class="bar" data-name="hot-fire" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hot-fire/cdcacc5da72debcd.gif"></div>
+                        </div>
+                        <div class="bar" data-name="👆" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction">👆</div>
+                        </div>
+                        <div class="bar" data-name="teamwork2" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/teamwork2/f47debb18ea1cace.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🤞" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction">🤞</div>
+                        </div>
+                        <div class="bar" data-name="agreed" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/agreed/b290acc822a52ff4.gif"></div>
+                        </div>
+                        <div class="bar" data-name="thank" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thank/d707b8317b64d3c2.png"></div>
+                        </div>
+                        <div class="bar" data-name="yw" data-count="10" style="width: 1.7066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yw/d2810ad9caa77105.png"></div>
+                        </div>
+                        <div class="bar" data-name="🚀" data-count="9" style="width: 1.536px">
+                            <div class="reaction">🚀</div>
+                        </div>
+                        <div class="bar" data-name="😱" data-count="9" style="width: 1.536px">
+                            <div class="reaction">😱</div>
+                        </div>
+                        <div class="bar" data-name="checked" data-count="9" style="width: 1.536px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/checked/9e2e3c7f4f5ba42d.gif"></div>
+                        </div>
+                        <div class="bar" data-name="party-rip" data-count="9" style="width: 1.536px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-rip/bfa8c5a84cc9f9f6.gif"></div>
+                        </div>
+                        <div class="bar" data-name="goth-nails" data-count="9" style="width: 1.536px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/goth-nails/ac899090be5f99f9.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="💅" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/care/2d9d07bc96aa2308.png"></div>
+                        </div>
+                        <div class="bar" data-name="♥️" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction">♥️</div>
+                        </div>
+                        <div class="bar" data-name="plus-one" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/plus-one/08c74aa722987e91.png"></div>
+                        </div>
+                        <div class="bar" data-name="👏" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction">👏</div>
+                        </div>
+                        <div class="bar" data-name="party-fireworks" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-fireworks/0336bd361280ef27.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="smiling_face_with_tear" data-count="8"
+                            style="width: 1.3653333333333333px">
+                            <div class="reaction">smiling_face_with_tear</div>
+                        </div>
+                        <div class="bar" data-name="😬" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction">😬</div>
+                        </div>
+                        <div class="bar" data-name="hmmm-thinking" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hmmm-thinking/cf3451eef11243fa.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="mario-banger" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/mario-banger/4ad238ebea40bfb9.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="yes-text" data-count="8" style="width: 1.3653333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yes-text/3559d94e00099354.png"></div>
+                        </div>
+                        <div class="bar" data-name="💡" data-count="7" style="width: 1.1946666666666665px">
+                            <div class="reaction">💡</div>
+                        </div>
+                        <div class="bar" data-name="looking" data-count="7" style="width: 1.1946666666666665px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/looking/652431d05586deeb.png"></div>
+                        </div>
+                        <div class="bar" data-name="gavel1" data-count="7" style="width: 1.1946666666666665px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/gavel1/d38de9122716855f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="♾" data-count="7" style="width: 1.1946666666666665px">
+                            <div class="reaction">♾</div>
+                        </div>
+                        <div class="bar" data-name="zelda-heart" data-count="7" style="width: 1.1946666666666665px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/zelda-heart/e51bcb9d2fa46ad4.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😄" data-count="7" style="width: 1.1946666666666665px">
+                            <div class="reaction">😄</div>
+                        </div>
+                        <div class="bar" data-name="hearts2" data-count="7" style="width: 1.1946666666666665px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hearts2/c9e1c12bfb5f1e74.gif"></div>
+                        </div>
+                        <div class="bar" data-name="blob_cool" data-count="7" style="width: 1.1946666666666665px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_cool/72bc6f8e956b8d88.png"></div>
+                        </div>
+                        <div class="bar" data-name="🤚" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ack_/dcbee7b12ad32858.png"></div>
+                        </div>
+                        <div class="bar" data-name="upsidedown-cry" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/upsidedown-cry/6a7d1b39c2843bd0.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="ty-" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ty-/f3d5989a14e9d224.png"></div>
+                        </div>
+                        <div class="bar" data-name="yes-yes-excellent" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yes-yes-excellent/38b73c5c54d1ceea.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="hot-garbage-deal-with-it" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hot-garbage-deal-with-it/b971613348074736.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🤷" data-count="6" style="width: 1.024px">
+                            <div class="reaction">🤷</div>
+                        </div>
+                        <div class="bar" data-name="face_with_cowboy_hat" data-count="6" style="width: 1.024px">
+                            <div class="reaction">face_with_cowboy_hat</div>
+                        </div>
+                        <div class="bar" data-name="🙈" data-count="6" style="width: 1.024px">
+                            <div class="reaction">🙈</div>
+                        </div>
+                        <div class="bar" data-name="nod-no" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nod-no/61cc7b8df2cf2b2f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="same2" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/same2/14505cfe9efacc92.png"></div>
+                        </div>
+                        <div class="bar" data-name="this0" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/this0/39f607eb083c1091.gif"></div>
+                        </div>
+                        <div class="bar" data-name="blob-hearts" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-hearts/8187b7896375d149.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="party-swoon" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-swoon/9c61dfa5971f81ea.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="💛" data-count="6" style="width: 1.024px">
+                            <div class="reaction">💛</div>
+                        </div>
+                        <div class="bar" data-name="notsureif" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/notsureif/a54abc1c20c2df09.png"></div>
+                        </div>
+                        <div class="bar" data-name="aww-cute" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/aww-cute/9b32feef3c58ae9a.png"></div>
+                        </div>
+                        <div class="bar" data-name="⭐" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/star_wave/d69ab7035c18451f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🚌" data-count="6" style="width: 1.024px">
+                            <div class="reaction">🚌</div>
+                        </div>
+                        <div class="bar" data-name="cattyping" data-count="6" style="width: 1.024px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cattyping/678b0aef50417cc1.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🤗" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hug/5e49ba1ee2e8548a.gif"></div>
+                        </div>
+                        <div class="bar" data-name="👋" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction">👋</div>
+                        </div>
+                        <div class="bar" data-name="🌷" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction">🌷</div>
+                        </div>
+                        <div class="bar" data-name="flag-nl" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction">flag-nl</div>
+                        </div>
+                        <div class="bar" data-name="very_nice" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/very_nice/a4535e7184287b40.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="yougot-itdude" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yougot-itdude/6e282f52ecdb0e84.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="banana-dance" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/banana-dance/a58a0e8d5767d2ff.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🙃" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction">🙃</div>
+                        </div>
+                        <div class="bar" data-name="lab_coat" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction">lab_coat</div>
+                        </div>
+                        <div class="bar" data-name="cry-laugh" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cry-laugh/c87b70b3f3ec6b1a.png"></div>
+                        </div>
+                        <div class="bar" data-name="holiday-mato" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/holiday-mato/192f3a78df1a6537.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😍" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction">😍</div>
+                        </div>
+                        <div class="bar" data-name="blob_salute" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_salute/db2956011e73615e.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🎞" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/rip/b7f857492ec6327b.png"></div>
+                        </div>
+                        <div class="bar" data-name="ahhhhhhhhh" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ahhhhhhhhh/dff91a10b9ec4614.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="pink-sparkles" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/pink-sparkles/fed2213ac5d81ec7.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="sad-cowboy" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/sad-cowboy/c224860153a98408.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="mustacheparrot" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/mustacheparrot/665e74bce5f544f1.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="catjam" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/catjam/62f6e9dd94d7a771.gif"></div>
+                        </div>
+                        <div class="bar" data-name="blob_sweats" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_sweats/6fdd0951ef7dd985.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="yay-happy-potato" data-count="5"
+                            style="width: 0.8533333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yay-happy-potato/ff6a0188a2ee16fd.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🤙" data-count="5" style="width: 0.8533333333333333px">
+                            <div class="reaction">🤙</div>
+                        </div>
+                        <div class="bar" data-name="1000" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/1000/3630aa15e7888f83.png"></div>
+                        </div>
+                        <div class="bar" data-name="10000" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/10000/3630aa15e7888f83.png"></div>
+                        </div>
+                        <div class="bar" data-name="🤭" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">🤭</div>
+                        </div>
+                        <div class="bar" data-name="😎" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">😎</div>
+                        </div>
+                        <div class="bar" data-name="🍦" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/icecream_cone/42aea5c0ea8485cc.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="nice2" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nice2/7d0f646c6ebcab96.png"></div>
+                        </div>
+                        <div class="bar" data-name="blob-dance" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-dance/c5b6f06c9a18e2e7.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="👎" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">👎</div>
+                        </div>
+                        <div class="bar" data-name="cowboy_sad" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cowboy_sad/2ed4731acbcbf5c3.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="☺️" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">☺️</div>
+                        </div>
+                        <div class="bar" data-name="nice100" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nice100/9d6f3391b18343f4.png"></div>
+                        </div>
+                        <div class="bar" data-name="pikaomg" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/pikaomg/21ad4504eb171a99.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🤯" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">🤯</div>
+                        </div>
+                        <div class="bar" data-name="😝" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">😝</div>
+                        </div>
+                        <div class="bar" data-name="cowboy-salute" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cowboy-salute/14df11e773b36e6e.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😠" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">😠</div>
+                        </div>
+                        <div class="bar" data-name="blob_thumbs_up" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_thumbs_up/db5ef26dfffefcb7.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="soundsgood" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/soundsgood/ffd1a707f1f022bc.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="yep1" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yep1/a0ee6a0b56d1e55a.png"></div>
+                        </div>
+                        <div class="bar" data-name="this-point" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/this-point/615cf16867bfcf5f.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="friyay" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/friyay/5cbb7c486dc6a7c8.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="nope" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nope/08c516178e5a19f5.gif"></div>
+                        </div>
+                        <div class="bar" data-name="wow1q" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/wow1q/dbd458d20e498b8a.gif"></div>
+                        </div>
+                        <div class="bar" data-name="❤️" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">❤️</div>
+                        </div>
+                        <div class="bar" data-name="yep_out_loud" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yep_out_loud/41f4df13b5a7167a.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😢" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">😢</div>
+                        </div>
+                        <div class="bar" data-name="bigred" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/bigred/4ca82b37b6aca9b2.png"></div>
+                        </div>
+                        <div class="bar" data-name="💜" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction">💜</div>
+                        </div>
+                        <div class="bar" data-name="party-diglett" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-diglett/8344b99543045791.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="tadaco" data-count="4" style="width: 0.6826666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/tadaco/c8b5971acfe53f47.png"></div>
+                        </div>
+                        <div class="bar" data-name="👻" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ghost_cowboy/807a0303402b99cb.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="yes-8047" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yes-8047/26d911b018621f9f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🎫" data-count="3" style="width: 0.512px">
+                            <div class="reaction">🎫</div>
+                        </div>
+                        <div class="bar" data-name="contact" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/contact/9102f312e2e5ace6.png"></div>
+                        </div>
+                        <div class="bar" data-name="0️⃣" data-count="3" style="width: 0.512px">
+                            <div class="reaction">0️⃣</div>
+                        </div>
+                        <div class="bar" data-name="✔️" data-count="3" style="width: 0.512px">
+                            <div class="reaction">✔️</div>
+                        </div>
+                        <div class="bar" data-name="thinkspin" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thinkspin/398dd50b4ed3bfc5.gif"></div>
+                        </div>
+                        <div class="bar" data-name="😁" data-count="3" style="width: 0.512px">
+                            <div class="reaction">😁</div>
+                        </div>
+                        <div class="bar" data-name="cowboy-eyes" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cowboy-eyes/6b486d66f51e7eec.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="eyeroll" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/eyeroll/8efc0e50b30666b6.gif"></div>
+                        </div>
+                        <div class="bar" data-name="📌" data-count="3" style="width: 0.512px">
+                            <div class="reaction">📌</div>
+                        </div>
+                        <div class="bar" data-name="fixed" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/fixed/720bd2894417aa4e.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="crying-sunglasses" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/crying-sunglasses/b8fb6a3df8566f46.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="chipotle-party" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/chipotle-party/6f89d57f67ec13b2.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="votecounts" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/votecounts/af9249d666948861.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🧠" data-count="3" style="width: 0.512px">
+                            <div class="reaction">🧠</div>
+                        </div>
+                        <div class="bar" data-name="clap2" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/clap2/4a9238a836bd91e1.gif"></div>
+                        </div>
+                        <div class="bar" data-name="very-interesting" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/very-interesting/b125dfca2baa3bb0.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="great" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/great/a260ef46c5f86c44.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="thumbsup_all" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thumbsup_all/50096a1020.png"></div>
+                        </div>
+                        <div class="bar" data-name="thank-you" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thank-you/26d128f59f373006.png"></div>
+                        </div>
+                        <div class="bar" data-name="birb" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/birb/d40674565f48ab1a.png"></div>
+                        </div>
+                        <div class="bar" data-name="friday" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/friday/299f2524dca55196.png"></div>
+                        </div>
+                        <div class="bar" data-name="💙" data-count="3" style="width: 0.512px">
+                            <div class="reaction">💙</div>
+                        </div>
+                        <div class="bar" data-name="🚢" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ship_it_parrot/0a41e165b18d9455.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="blob-nod" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-nod/aabd7b0b9049ea31.gif"></div>
+                        </div>
+                        <div class="bar" data-name="performance" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/performance/ffdb4e8891c89555.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="moneyparrot" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/moneyparrot/b5b09184e1f21f92.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="eth1" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/eth1/2e5afaea9356d57a.png"></div>
+                        </div>
+                        <div class="bar" data-name="coupon" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/coupon/eb51679ba20b6e75.gif"></div>
+                        </div>
+                        <div class="bar" data-name="whew" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/whew/6d9a7dc69b704702.gif"></div>
+                        </div>
+                        <div class="bar" data-name="perfection" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/perfection/ceacbb9b2f177258.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="doit" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/doit/f4236cc73e6ef39e.png"></div>
+                        </div>
+                        <div class="bar" data-name="upvote" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/upvote/3bb5b63ae3ff97a0.png"></div>
+                        </div>
+                        <div class="bar" data-name="party_penguin_dance" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party_penguin_dance/54076471d274f01f.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="send_it" data-count="3" style="width: 0.512px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/send_it/2798291da1e7cdcf.png"></div>
+                        </div>
+                        <div class="bar" data-name="🥑" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/voc/54185af4c3d04c32.png"></div>
+                        </div>
+                        <div class="bar" data-name="cry-rotating" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cry-rotating/65e29f68928b8b6e.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😬" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/grimacing_cowboy/7b821d776e5054bf.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="flag-dk" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">flag-dk</div>
+                        </div>
+                        <div class="bar" data-name="willy_wonka" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/willy_wonka/b027caf8b190217c.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="til" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/til/f8de874ac9e8b0fc.png"></div>
+                        </div>
+                        <div class="bar" data-name="❗" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">❗</div>
+                        </div>
+                        <div class="bar" data-name="fair_enough" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/fair_enough/8039f6b9f012e49d.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="indiana_jones_run" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/indiana_jones_run/688e738134f61305.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="homer" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/homer/9904f844332f7c88.gif"></div>
+                        </div>
+                        <div class="bar" data-name="blob_sad" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_sad/906d5953716ed85a.png"></div>
+                        </div>
+                        <div class="bar" data-name="all-done" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/all-done/49b37ceedaef812c.png"></div>
+                        </div>
+                        <div class="bar" data-name="☕" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/coffee_shrug/ceafa72478c3e357.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="jinx" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/jinx/4e1ccb5f3e2d031e.png"></div>
+                        </div>
+                        <div class="bar" data-name="blob_aww" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_aww/72bc6f8e956b8d88.png"></div>
+                        </div>
+                        <div class="bar" data-name="damn" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/damn/8b0ede253e6db0e7.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🎂" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">🎂</div>
+                        </div>
+                        <div class="bar" data-name="hooray" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hooray/5d5353184be73519.png"></div>
+                        </div>
+                        <div class="bar" data-name="thankyouhearts" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thankyouhearts/1f15dce321e01960.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="dab_squidward" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/dab_squidward/850747adcc406767.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="face_exhaling" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">face_exhaling</div>
+                        </div>
+                        <div class="bar" data-name="gratitude-thank-you" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/gratitude-thank-you/40aef8a8d3ff5626.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="ooo" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ooo/11b889b53b7cc942.png"></div>
+                        </div>
+                        <div class="bar" data-name="skating-bart-simpson" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/skating-bart-simpson/91c853f3377dc34b.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="yep" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yep/928b4d350e22a802.gif"></div>
+                        </div>
+                        <div class="bar" data-name="ohno" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ohno/84d43f65c885dabe.png"></div>
+                        </div>
+                        <div class="bar" data-name="mardi_gras_parrot" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/mardi_gras_parrot/a53aac16a7fe3827.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="kite" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">kite</div>
+                        </div>
+                        <div class="bar" data-name="nice" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nice/1036bbf5780fbaad.png"></div>
+                        </div>
+                        <div class="bar" data-name="🖤" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">🖤</div>
+                        </div>
+                        <div class="bar" data-name="noted" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/noted/d033741861a792eb.png"></div>
+                        </div>
+                        <div class="bar" data-name="blob-smart" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-smart/1994905399a4c7ae.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="hyperclap" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hyperclap/eae899427e271521.gif"></div>
+                        </div>
+                        <div class="bar" data-name="salute-2" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/salute-2/3d4fe5b3cdd7aff3.gif"></div>
+                        </div>
+                        <div class="bar" data-name="norton" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/norton/c6021cfc4f9bad55.png"></div>
+                        </div>
+                        <div class="bar" data-name="xmas-pika" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/xmas-pika/adf75f70f5d64f5b.png"></div>
+                        </div>
+                        <div class="bar" data-name="chefs-kiss-guy-fieri" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/chefs-kiss-guy-fieri/de7198bff43722a7.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="neckbeard" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/neckbeard/a6cfd28df2d31f84.png"></div>
+                        </div>
+                        <div class="bar" data-name="melting-face" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/melting-face/911a953d3241d32a.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🤝" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">🤝</div>
+                        </div>
+                        <div class="bar" data-name="ice_cube" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">ice_cube</div>
+                        </div>
+                        <div class="bar" data-name="laura-b" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/laura-b/54f3b062583f5c73.png"></div>
+                        </div>
+                        <div class="bar" data-name="bob" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/bob/efc5a8015fbbd8c6.png"></div>
+                        </div>
+                        <div class="bar" data-name="teamwork-hands" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/teamwork-hands/fc00b22e47269ade.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="real_mvp" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/real_mvp/3d3919ece08b0bf2.png"></div>
+                        </div>
+                        <div class="bar" data-name="hehe" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hehe/522d948daab49ace.gif"></div>
+                        </div>
+                        <div class="bar" data-name="it's-all-good" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/it%2527s-all-good/0305bc88953fe389.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🥰" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hr/62fcfe0d2dfe8a61.png"></div>
+                        </div>
+                        <div class="bar" data-name="correct" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/correct/889b779b441b4fe1.png"></div>
+                        </div>
+                        <div class="bar" data-name="blob-wave" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-wave/1575f12080bfc22f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="😔" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">😔</div>
+                        </div>
+                        <div class="bar" data-name="mildpanic" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/mildpanic/c9ac0e61ff4daf06.png"></div>
+                        </div>
+                        <div class="bar" data-name="nodders" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nodders/802741e1ea82da87.gif"></div>
+                        </div>
+                        <div class="bar" data-name="smart" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/smart/362886fd71768167.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="meow-wave" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/meow-wave/aba9f8f99685eeda.gif"></div>
+                        </div>
+                        <div class="bar" data-name="😊" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">😊</div>
+                        </div>
+                        <div class="bar" data-name="tomnook-clap" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/tomnook-clap/2871f0536694a510.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="clapping" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/clapping/08b03b93c3ee22e4.gif"></div>
+                        </div>
+                        <div class="bar" data-name="party_parrot" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party_parrot/309fd428004b0732.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="fancy-pants" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/fancy-pants/05e97409ccb5d8f0.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="frog-wow-what" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/frog-wow-what/6ba28b039159e0e9.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="face_with_peeking_eye" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction">face_with_peeking_eye</div>
+                        </div>
+                        <div class="bar" data-name="🤷‍♂️" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">🤷‍♂️</div>
+                        </div>
+                        <div class="bar" data-name="perfect" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/perfect/86db58e9694f4ce9.gif"></div>
+                        </div>
+                        <div class="bar" data-name="cancel" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cancel/6cc8274a6b76c44f.png"></div>
+                        </div>
+                        <div class="bar" data-name="fixitfelix" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/fixitfelix/b07643f0b4788682.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="meow_double_thumbs2" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/meow_double_thumbs2/e8d70470c1e42404.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="ty9" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ty9/8915a983108563a5.png"></div>
+                        </div>
+                        <div class="bar" data-name="oof" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/oof/dc4856aeb59aa70d.png"></div>
+                        </div>
+                        <div class="bar" data-name="smiling_face_with_3_hearts" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction">smiling_face_with_3_hearts</div>
+                        </div>
+                        <div class="bar" data-name="spiderman-pointing" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/spiderman-pointing/bd1c0a97b091b28e.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🐧" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/penguin_dance/caf4650706e6aef3.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🧶" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">🧶</div>
+                        </div>
+                        <div class="bar" data-name="party-heb" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-heb/2dd04895fed64838.gif"></div>
+                        </div>
+                        <div class="bar" data-name="cowboy-1" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cowboy-1/ebf453994f1c8de7.gif"></div>
+                        </div>
+                        <div class="bar" data-name="peter-cry" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/peter-cry/637f867e5cf87537.gif"></div>
+                        </div>
+                        <div class="bar" data-name="yas" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yas/100f6b871f7ca0c5.png"></div>
+                        </div>
+                        <div class="bar" data-name="🤓" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">🤓</div>
+                        </div>
+                        <div class="bar" data-name="heb-intensifies" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/heb-intensifies/6bec9eaff9c6e944.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🍻" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">🍻</div>
+                        </div>
+                        <div class="bar" data-name="yourewelcome" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yourewelcome/d2810ad9caa77105.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="done-spin" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/done-spin/615358ffab356b5a.gif"></div>
+                        </div>
+                        <div class="bar" data-name="elmo_fire" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/elmo_fire/848953e0ee61fc81.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🙀" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">🙀</div>
+                        </div>
+                        <div class="bar" data-name="yasss" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yasss/784c8c712897b397.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="phew-phew" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/phew-phew/d5e0fb03b29d31aa.png"></div>
+                        </div>
+                        <div class="bar" data-name="vomit-intensifies" data-count="2"
+                            style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/vomit-intensifies/25dd51f0b37879c7.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="✌" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction">✌</div>
+                        </div>
+                        <div class="bar" data-name="blob-dj" data-count="2" style="width: 0.3413333333333333px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-dj/aabd7b0b9049ea31.gif"></div>
+                        </div>
+                        <div class="bar" data-name="1000000" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/1000000/3630aa15e7888f83.png"></div>
+                        </div>
+                        <div class="bar" data-name="👁" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">👁</div>
+                        </div>
+                        <div class="bar" data-name="bows" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/bows/efe54fe573605790.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🦸‍♀️" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hero/2206c4cfb40d8d14.gif"></div>
+                        </div>
+                        <div class="bar" data-name="keanu-thanks" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/keanu-thanks/d106a7f5334af024.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="nice-hdr" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nice-hdr/47226bb63d905e26.png"></div>
+                        </div>
+                        <div class="bar" data-name="🚢" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🚢</div>
+                        </div>
+                        <div class="bar" data-name="whoa" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/whoa/6798691290f583eb.png"></div>
+                        </div>
+                        <div class="bar" data-name="mic-drop" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/mic-drop/10af0725213b00ef.gif"></div>
+                        </div>
+                        <div class="bar" data-name="good_to_know" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/good_to_know/8dfb4323bcfcead6.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="💰" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">💰</div>
+                        </div>
+                        <div class="bar" data-name="loading" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/loading/bb4fd3a06a9e516f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="sure" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/sure/224d6c4d4900e128.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="melting_cowboy" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/melting_cowboy/9293a0956edefc19.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="iseewhatyoudidthere" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/iseewhatyoudidthere/8e063021ab199361.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="upside_down_cowboy" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/upside_down_cowboy/1e12969030eb3a66.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🎱" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🎱</div>
+                        </div>
+                        <div class="bar" data-name="ooh" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ooh/3d8a808d69c61634.gif"></div>
+                        </div>
+                        <div class="bar" data-name="excellent" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/excellent/6decaf18722d5b99.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="wutface" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/wutface/8c32bb181f63b1ee.png"></div>
+                        </div>
+                        <div class="bar" data-name="meow_thanks" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/meow_thanks/df97dc7ccc21ef65.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="youre_welcome" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/youre_welcome/3f539632064cf25d.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😕" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/confused_dog/716001244a883a56.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="weird_al" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/weird_al/081da462a5ba27de.png"></div>
+                        </div>
+                        <div class="bar" data-name="squirrel" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/squirrel/465f40c0e0.png"></div>
+                        </div>
+                        <div class="bar" data-name="waveboi" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/waveboi/5f338ad87d9f3cf9.gif"></div>
+                        </div>
+                        <div class="bar" data-name="⭐" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">⭐</div>
+                        </div>
+                        <div class="bar" data-name="🐐" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🐐</div>
+                        </div>
+                        <div class="bar" data-name="lgtm_party" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lgtm_party/f1d7c3f8b9e948ab.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="im_looking" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/im_looking/8e8a1da4ff0cf0c1.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="oh_no" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/oh_no/0ce9148eeb2d6250.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="woohoo" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/woohoo/ccd525dae49f45d5.png"></div>
+                        </div>
+                        <div class="bar" data-name="neat" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/neat/5d27a3de778e3197.png"></div>
+                        </div>
+                        <div class="bar" data-name="gotem" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/gotem/1a714f0cdd836023.png"></div>
+                        </div>
+                        <div class="bar" data-name="stuck_out_tongue_closed_eyes_cowboy" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/stuck_out_tongue_closed_eyes_cowboy/eb6a270045337c13.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="rickroll" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/rickroll/ebe6fc60f96a9551.gif"></div>
+                        </div>
+                        <div class="bar" data-name="mr-freeze" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/mr-freeze/d9969437679afce8.png"></div>
+                        </div>
+                        <div class="bar" data-name="got-cha" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/got-cha/cb45cb072f1fdbcd.png"></div>
+                        </div>
+                        <div class="bar" data-name="confused-math-lady" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/confused-math-lady/89a3e1709f60e00d.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="yesss" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yesss/92333a2831378c7e.gif"></div>
+                        </div>
+                        <div class="bar" data-name="nooooo" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nooooo/c5c75c5445f4021f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🥞" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🥞</div>
+                        </div>
+                        <div class="bar" data-name="bless" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/bless/028230d8b4a23e33.png"></div>
+                        </div>
+                        <div class="bar" data-name="🆗" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🆗</div>
+                        </div>
+                        <div class="bar" data-name="😌" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">😌</div>
+                        </div>
+                        <div class="bar" data-name="🍣" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/sus/d3d9532905948e3d.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="fancy-mustache" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/fancy-mustache/39dd8dae8d158166.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="cool-cool" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cool-cool/47418b686f6c528f.gif"></div>
+                        </div>
+                        <div class="bar" data-name="sad" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/sad/ca31961e5757cbf2.gif"></div>
+                        </div>
+                        <div class="bar" data-name="disappear" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/disappear/a90bccf3314d58ad.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🤦‍♀️" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🤦‍♀️</div>
+                        </div>
+                        <div class="bar" data-name="old_man_yells_at_zscaler" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/old_man_yells_at_zscaler/95eaabeb411ee6ce.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="⏱" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">⏱</div>
+                        </div>
+                        <div class="bar" data-name="🍕" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/pizza_waving/b127022de65c6109.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="pizzaspin" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/pizzaspin/989daab5df7189dd.gif"></div>
+                        </div>
+                        <div class="bar" data-name="pizza-my-heart" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/pizza-my-heart/4fc264fbf1ff1bc5.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="fancy-pizza" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/fancy-pizza/76ebb30f0219ab5d.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="best_pizza" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/best_pizza/2bdf3e4618a0dea2.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="meow_pizza" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/meow_pizza/6912819b90ff27cb.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🙅" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🙅</div>
+                        </div>
+                        <div class="bar" data-name="sorry" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/sorry/86d8f234f5b39a93.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="blob_angry" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_angry/72bc6f8e956b8d88.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="badguy" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/badguy/15b50f6cf1e9cea3.png"></div>
+                        </div>
+                        <div class="bar" data-name="exactly" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/exactly/f16a8185c582f9b8.gif"></div>
+                        </div>
+                        <div class="bar" data-name="😰" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">😰</div>
+                        </div>
+                        <div class="bar" data-name="shifty-eyes" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/shifty-eyes/2d9953127909877c.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="hehehehe" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hehehehe/90cc151b770daeea.gif"></div>
+                        </div>
+                        <div class="bar" data-name="your-welcome" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/your-welcome/f74a1a4ff9151667.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="salute-sob" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/salute-sob/ca6ee273d0f7213b.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="teamworkparty" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/teamworkparty/e81d044dd88bfea2.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="cowboy_scream" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cowboy_scream/aaa4282238052e37.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="not-sure" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/not-sure/59adcec742e11341.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="please1" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/please1/058d8b4e27f4bbb2.png"></div>
+                        </div>
+                        <div class="bar" data-name="loading-dots" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/loading-dots/94c94d5437cdc9d4.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🎄" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🎄</div>
+                        </div>
+                        <div class="bar" data-name="christmas-lights" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/christmas-lights/4c3fee8ed56912db.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="all_the_things" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/all_the_things/11c03550c8b3c538.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="christmas_tree_dance" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/christmas_tree_dance/c4ca5b56c1e715f8.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🌀" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🌀</div>
+                        </div>
+                        <div class="bar" data-name="hollowparty" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hollowparty/db8e41e41e9c0459.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🧸" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🧸</div>
+                        </div>
+                        <div class="bar" data-name="⚱" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/fun/55b88b0de0f881db.png"></div>
+                        </div>
+                        <div class="bar" data-name="blob-same" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-same/cc97450f9e4ff887.png"></div>
+                        </div>
+                        <div class="bar" data-name="parrotdad" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/parrotdad/6b70c1136298926a.gif"></div>
+                        </div>
+                        <div class="bar" data-name="allgood" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/allgood/0528eea7b73c60c6.png"></div>
+                        </div>
+                        <div class="bar" data-name="aye-aye" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/aye-aye/da1dbedc8b57cdea.gif"></div>
+                        </div>
+                        <div class="bar" data-name="merged_github" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/merged_github/04e38a68828f1a43.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😞" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">😞</div>
+                        </div>
+                        <div class="bar" data-name="typingcat" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/typingcat/b5c77dc6c6609b89.gif"></div>
+                        </div>
+                        <div class="bar" data-name="yayyay" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yayyay/ff6a0188a2ee16fd.gif"></div>
+                        </div>
+                        <div class="bar" data-name="truestory" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/truestory/926c78be221ac408.png"></div>
+                        </div>
+                        <div class="bar" data-name="technically_correct" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/technically_correct/b381c1393bac8a5c.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🇯🇵" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🇯🇵</div>
+                        </div>
+                        <div class="bar" data-name="you-got-it" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/you-got-it/38b73c5c54d1ceea.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😮" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">😮</div>
+                        </div>
+                        <div class="bar" data-name="🐌" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🐌</div>
+                        </div>
+                        <div class="bar" data-name="🍕" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🍕</div>
+                        </div>
+                        <div class="bar" data-name="✝" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">✝</div>
+                        </div>
+                        <div class="bar" data-name="really-losing-my-pizza-mind" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/really-losing-my-pizza-mind/fbc22d81f1b9ad4b.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="meow_shh" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/meow_shh/df97dc7ccc21ef65.png"></div>
+                        </div>
+                        <div class="bar" data-name="huge-mistake" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/huge-mistake/5e49ba1ee2e8548a.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🤢" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🤢</div>
+                        </div>
+                        <div class="bar" data-name="💀" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">💀</div>
+                        </div>
+                        <div class="bar" data-name="im-spinning" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/im-spinning/220a44abd9edda1c.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="amaze" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/amaze/0328f5bff0a4d681.gif"></div>
+                        </div>
+                        <div class="bar" data-name="facts" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/facts/e3b98263562d893c.png"></div>
+                        </div>
+                        <div class="bar" data-name="bender-neat" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/bender-neat/220ba3aa85426975.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="hard-same" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hard-same/69e77967ae25dd66.png"></div>
+                        </div>
+                        <div class="bar" data-name="how_rude" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/how_rude/4b964e102271c237.gif"></div>
+                        </div>
+                        <div class="bar" data-name="truth1" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/truth1/5198f10efc8c34ad.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="please_minion" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/please_minion/34d28165dd50964e.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="☕" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">☕</div>
+                        </div>
+                        <div class="bar" data-name="heb" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/heb/29270f6ebef0dd32.png"></div>
+                        </div>
+                        <div class="bar" data-name="vacay" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/vacay/d66408dbc502d99a.gif"></div>
+                        </div>
+                        <div class="bar" data-name="😃" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">😃</div>
+                        </div>
+                        <div class="bar" data-name="weekend" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/weekend/3e50ca15efdc9ba5.png"></div>
+                        </div>
+                        <div class="bar" data-name="manny_thumbs_up" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/manny_thumbs_up/336a0ae508b13eff.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="chompy" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/chompy/59ad41dc6131ecba.gif"></div>
+                        </div>
+                        <div class="bar" data-name="1️⃣" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/one_team/72b3cb31c48f5a44.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="gengar-dab" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/gengar-dab/a0ef9118fc65b483.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="owen_wow" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/owen_wow/2bf322a401599beb.png"></div>
+                        </div>
+                        <div class="bar" data-name="meow_devil" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/meow_devil/86ebd4266c27e3a0.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🥴" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🥴</div>
+                        </div>
+                        <div class="bar" data-name="ack_will_do" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ack_will_do/43e3a32c2f49f4c4.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="maui_youre_welcome" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/maui_youre_welcome/0524340cd99a3c78.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="tyheart" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/tyheart/33471a9da0e96d94.png"></div>
+                        </div>
+                        <div class="bar" data-name="david-wow" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">david-wow</div>
+                        </div>
+                        <div class="bar" data-name="uno-skip" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/uno-skip/698188e5ce493737.png"></div>
+                        </div>
+                        <div class="bar" data-name="thankyou_" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thankyou_/9462b33373f6bc6d.gif"></div>
+                        </div>
+                        <div class="bar" data-name="📥" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">📥</div>
+                        </div>
+                        <div class="bar" data-name="party-100" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-100/f7cffba92653ef5e.gif"></div>
+                        </div>
+                        <div class="bar" data-name="💨" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">💨</div>
+                        </div>
+                        <div class="bar" data-name="money-pig" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/money-pig/a0b0dfb7f803c091.gif"></div>
+                        </div>
+                        <div class="bar" data-name="confirmed" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/confirmed/9a29242e23002527.png"></div>
+                        </div>
+                        <div class="bar" data-name="anger-inside-out" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/anger-inside-out/fa8384d67a228b4f.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="haha" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/haha/bf9a5089ffa25947.gif"></div>
+                        </div>
+                        <div class="bar" data-name="hahaha" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hahaha/a80f768e6320f145.gif"></div>
+                        </div>
+                        <div class="bar" data-name="good_point" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/good_point/cb45cb072f1fdbcd.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="cowboy-eyes-8897" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cowboy-eyes-8897/b88ecb8168375dff.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="catching-tacos" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/catching-tacos/b40631bd4d40b6c6.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🆒" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cool_crying/731ec9d6c15454ec.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="zoom" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/zoom/fffaa59f35844126.png"></div>
+                        </div>
+                        <div class="bar" data-name="rock_player" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/rock_player/2753dc00291a3087.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="blob-thanks" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-thanks/09639a7400d08ac5.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🦷" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🦷</div>
+                        </div>
+                        <div class="bar" data-name="happy-broccoli" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/happy-broccoli/f90b3231054dd42e.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="blob-ty" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob-ty/6e8f7d7a55dd6e74.png"></div>
+                        </div>
+                        <div class="bar" data-name="welcome" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/welcome/faa9d1aaf2271981.png"></div>
+                        </div>
+                        <div class="bar" data-name="ohsnap" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/ohsnap/9cad6a2c56cde194.gif"></div>
+                        </div>
+                        <div class="bar" data-name="📐" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/angular/4ed687219b3e4f1a.png"></div>
+                        </div>
+                        <div class="bar" data-name="thats-what-i-thought" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thats-what-i-thought/f2a8b818988d0058.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🤦‍♂️" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/facepalm/2ddf44d5f0575598.png"></div>
+                        </div>
+                        <div class="bar" data-name="hmm2" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/hmm2/aeeeeadc6564a3bc.png"></div>
+                        </div>
+                        <div class="bar" data-name="success" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/success/646e39de0c44f997.png"></div>
+                        </div>
+                        <div class="bar" data-name="no-worries" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/no-worries/5fd5d20b6a4ca19e.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="double-salute" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/double-salute/867e0d8bfe1b43c2.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="💸" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">💸</div>
+                        </div>
+                        <div class="bar" data-name="nice_" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nice_/409d3c17e44b318b.png"></div>
+                        </div>
+                        <div class="bar" data-name="onit" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/onit/e3966b365b79e702.png"></div>
+                        </div>
+                        <div class="bar" data-name="pumpkin" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/pumpkin/5d86c44e8ac52ed3.gif"></div>
+                        </div>
+                        <div class="bar" data-name="raise-hand-desk" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/raise-hand-desk/281ac60c75bf28a6.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="no-thankyou" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/no-thankyou/307e08b58ea4724e.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="easy-button" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/easy-button/2e192aabf78d35e4.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="thx" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thx/1ad513c792df6e8a.gif"></div>
+                        </div>
+                        <div class="bar" data-name="party_dead" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party_dead/adfe7af6af9f5f33.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="100tomato" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/100tomato/2b0f9d63ed4e431f.png"></div>
+                        </div>
+                        <div class="bar" data-name="face_holding_back_tears" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction">face_holding_back_tears</div>
+                        </div>
+                        <div class="bar" data-name="sounds_good" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/sounds_good/287485b54f688eff.jpg">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="dance-bb" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/dance-bb/91ebf7ece78c3250.gif"></div>
+                        </div>
+                        <div class="bar" data-name="smooth_brain" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/smooth_brain/0e56269af66d5360.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="dancing-bowser" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/dancing-bowser/5b9c69aec391d593.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="bear-wave" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/bear-wave/384c0025af16c693.png"></div>
+                        </div>
+                        <div class="bar" data-name="water-slide" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/water-slide/85dde8bdb3602131.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="sleuth_or_spy" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">sleuth_or_spy</div>
+                        </div>
+                        <div class="bar" data-name="gitlab-ci-success" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/gitlab-ci-success/bb8ffe44ac377010.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="face_with_diagonal_mouth" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction">face_with_diagonal_mouth</div>
+                        </div>
+                        <div class="bar" data-name="alien-wave" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/alien-wave/09a8a4447328ccfe.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="⛰" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">⛰</div>
+                        </div>
+                        <div class="bar" data-name="care-react" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/care-react/3fdb98cb4e992d26.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="cry-potato" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cry-potato/d18a15bb4062fc0b.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="nextjs" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nextjs/becd0e6096a3709f.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="sadtrombone" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/sadtrombone/949de962d681b047.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="high-five" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/high-five/db8e41e41e9c0459.gif"></div>
+                        </div>
+                        <div class="bar" data-name="yougotitdude" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/yougotitdude/937a9ccdc317cb2f.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="jira-party" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/jira-party/894c025904c94900.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="bulba-aww" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/bulba-aww/e60354983d5cb1ae.png"></div>
+                        </div>
+                        <div class="bar" data-name="nerdy_cowboy" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nerdy_cowboy/31644c220e481865.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="lol1" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lol1/6f798c0ca38f3425.gif"></div>
+                        </div>
+                        <div class="bar" data-name="lgtm" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lgtm/76f1cb9a4b042077.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="🧀" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cheese/54abc992119ba9e3.png"></div>
+                        </div>
+                        <div class="bar" data-name="test-love" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/test-love/e40383bf01b9343a.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🎻" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🎻</div>
+                        </div>
+                        <div class="bar" data-name="jet-pack-dunkie" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/jet-pack-dunkie/3f49c6090525e34f.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="diglett-party" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/diglett-party/229095f4e68bbefd.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="😜" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">😜</div>
+                        </div>
+                        <div class="bar" data-name="😇" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">😇</div>
+                        </div>
+                        <div class="bar" data-name="😆" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/laugh/25b919127731b600.gif"></div>
+                        </div>
+                        <div class="bar" data-name="🏁" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/check/b4f5c3bf82aba28e.png"></div>
+                        </div>
+                        <div class="bar" data-name="🙉" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🙉</div>
+                        </div>
+                        <div class="bar" data-name="lightsaber_yellow" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lightsaber_yellow/0d721911ca84a326.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="awwblob" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/awwblob/8bc2b88ab288cb32.png"></div>
+                        </div>
+                        <div class="bar" data-name="face_with_spiral_eyes" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction">face_with_spiral_eyes</div>
+                        </div>
+                        <div class="bar" data-name="lightsaber_blue" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/lightsaber_blue/78f284738dd3473e.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="rogerroger" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/rogerroger/781b9dd0ec7619e5.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="slow-parrot" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/slow-parrot/c5134d1ffcfc991a.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="big-brain" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/big-brain/db6dc823028223d1.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="dream" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/dream/db77f3207e82f61a.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="okay" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/okay/a76eab39da4529f6.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="thanks9a" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thanks9a/63b2c4056d3acf2d.jpg"></div>
+                        </div>
+                        <div class="bar" data-name="party-cool-doge" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party-cool-doge/d61c1efca1a43229.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="nooooooooo" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/nooooooooo/8d3f16a94a504b19.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🐱" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/cat_clap/356ee35caf70c0c8.gif"></div>
+                        </div>
+                        <div class="bar" data-name="crycat" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/crycat/ebf453994f1c8de7.png"></div>
+                        </div>
+                        <div class="bar" data-name="🤧" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🤧</div>
+                        </div>
+                        <div class="bar" data-name="welcome-back" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/welcome-back/312b685da9ca98b2.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="espresso" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/espresso/f679dc167ae9c1b0.png"></div>
+                        </div>
+                        <div class="bar" data-name="gracias" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/gracias/f746b05875d355c8.gif"></div>
+                        </div>
+                        <div class="bar" data-name="thanks9b" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/thanks9b/63b2c4056d3acf2d.png"></div>
+                        </div>
+                        <div class="bar" data-name="awkward_monkey_look" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/awkward_monkey_look/3a56b0a98b2a5489.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="charmander-dance" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/charmander-dance/5632d680aa37a623.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🍦" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🍦</div>
+                        </div>
+                        <div class="bar" data-name="party_rocket" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/party_rocket/da47a7f9f8b72be1.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="ladybug" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">ladybug</div>
+                        </div>
+                        <div class="bar" data-name="👻" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">👻</div>
+                        </div>
+                        <div class="bar" data-name="gentleman_parrot" data-count="1"
+                            style="width: 0.17066666666666666px">
+                            <div class="reaction">gentleman_parrot</div>
+                        </div>
+                        <div class="bar" data-name="blob_smile" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/blob_smile/6fdd0951ef7dd985.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="just_do_it" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/just_do_it/a06b40d1ac09e458.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="shrug-meme" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/shrug-meme/5350ef0ce880bf18.png">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="🤐" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🤐</div>
+                        </div>
+                        <div class="bar" data-name="sadcat" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/sadcat/9d91a1539efc9d97.png"></div>
+                        </div>
+                        <div class="bar" data-name="beepodance" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/beepodance/8c3aba12390169d0.gif">
+                            </div>
+                        </div>
+                        <div class="bar" data-name="💚" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">💚</div>
+                        </div>
+                        <div class="bar" data-name="🍩" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction">🍩</div>
+                        </div>
+                        <div class="bar" data-name="catjam-cry" data-count="1" style="width: 0.17066666666666666px">
+                            <div class="reaction"><img
+                                    src="https://emoji.slack-edge.com/T030V20UZ70/catjam-cry/18efe324a139b001.gif">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </main>
+    <footer>
+        <p>
+            To learn more about me and my work, contact me by
+            <a href="mailto:loganmccaul@gmail.com">email</a> or add me on
+            <a target="_blank" href="https://www.linkedin.com/in/logan-mccaul-12460b68">LinkedIn</a>.
+        </p>
+    </footer>
+</body>
+
+</html>
