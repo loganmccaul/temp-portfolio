@@ -36,6 +36,7 @@
             position: relative;
             transition: all 300ms ease-out;
             margin: 2rem auto;
+            left: .5rem;
         }
 
         .scale {
@@ -46,7 +47,6 @@
             margin-bottom: 0.5rem;
             border-bottom: 1px solid var(--grid);
             padding-bottom: 12px;
-            width: 300px;
             color: var(--text-secondary);
         }
 
@@ -119,18 +119,14 @@
             <time datetime="2025-12-12">December 12th, 2025</time>
             <section>
                 <p>
-                    I recently built a small app called <a href="https://reaction-count.vercel.app/">Reaction Count</a>
-                    that pulls all the reactions I've received on Slack. I switched to management about 3 years ago and
-                    missed being able
-                    to see my developer stats at the end of the year like lines added, files changed, etc... My job is
-                    now heavily tied to
-                    my communication in looking a how my peers and reports respond to my messages may give me
-                    interesting insights into my
-                    communication. Ultimately, I didn't learn a ton of new information, but I did get a chance to write
-                    some code again, play with
-                    the Slack APIs, and try out Vercel hosting. I did paste the results in ChatGPT though and asked it
-                    what it says about me. AI, which is not at all known for being overly positive, nailed a summary of
-                    my Slack communication.
+                    Three years ago I switched to management. When I was a developer, I loved seeing various git stats such as lines added, files changed, etc... Now that I'm in management my job is much harder to capture quantitatively. A big part of my job is communication and one way to analyze my communication style is to look at my most commonly used tool, Slack. In a previous post, I looked at <a target="_blank" href="slack-stats-2025.html">how ofter I use certain words in my Slack messages</a>. This time I wanted to look at how people respond to my messages.
+                </p>
+                <p>
+                    One of the ways to analyze my coworker's responses is to look at the reactions my messages receive. However, to gather that data it wasn't as simple as using Slack's search. Instead I had to build a small app called <a href="https://reaction-count.vercel.app/">Reaction Count</a>
+                    that uses Slack's APIs to iteratively query for messages that I've sent that have a reaction and then one by one gathers the reactions for those messages. It was a fun project and gave me a chance to dive into code again.
+                </p>
+                <p>
+                    After running the app for over an hour and half to wait while it worked through Slack's rate limiting, I was able to get a list of all the reactions my messages have received. It was interesting from a data standpoint, but I didn't quite know what to make of it. It's 2025 though, which means I know longer need to think for myself. So I took the data, and plopped it into ChatGPT. Needless to say ChatGPT, a tool that's never been known for exaggerated flattery had these kind words to say: 
                 </p>
                 <div class="ai">
                     <h2>TL;DR — What your reactions say</h2>
@@ -197,10 +193,9 @@
                 </p>
             </section>
             <section>
-                <h2>My Reaction Counts</h2>
-                <p>Here's all 5,928 reactions my messags on Slack have received in my 5 years at HEB. This include all
-                    DMs, all messages I've sent in private channels, and messages I've sent in public channels in the
-                    past year (HEB's retention policy).</p>
+                <h2>The full reaction count</h2>
+                <p>Here's all 5,928 reactions my messages have received on Slack over the 5 years I've been with H-E-B. This include all my DMs, all the messages I've sent in private channels, and the messages I've sent in public channels from the
+                    past year (H-E-B's retention policy is one year for public channels). That's 4,353 messages with reactions. For posterity, I've sent 35,758 messages in total.</p>
                 <div id="barchart" class="barchart">
                     <div class="scale" data-max="160">
                         <span>0</span>
