@@ -175,7 +175,6 @@ section {
 
 a {
   color: var(--font, #0f62fe);
-  white-space: nowrap;
   font-weight: 600;
 }
 
