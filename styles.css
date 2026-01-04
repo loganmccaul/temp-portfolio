@@ -289,7 +289,10 @@ footer p {
   color: var(--font);
   text-decoration: none;
   font-weight: 400;
-  margin-right: .5rem;
+}
+
+.article-link+.article-link {
+  margin-left: .5rem;
 }
 
 
@@ -331,40 +334,38 @@ p+.article-link {
   list-style: none;
   padding-left: 0;
   margin: 0;
+  font-size: .75rem;
+  font-weight: 400;
 }
-.projects li {
-  border: 1px solid rgba(0, 0, 0, .2);
-  padding: 0;
+.project {
+  border: 1px solid rgba(0, 0, 0, .1);
+  padding: 1rem;
   margin-top: 1rem;
   border-radius: 2px;
-  box-shadow: 3px 3px 0px rgba(0,0,0,.1);
-  transition: all .15s ease-in-out;
+  display: flex;
 }
 
-.projects li:hover {
-  box-shadow: 5px 5px 2px rgba(0,0,0,.1);
+.project p {
+  margin-top: 0;
+  align-self: center;
+}
+.project h3 {
+  flex: 1;
+  margin-right: 1rem;
 }
 
-.projects a {
-  display: block;
-  text-decoration: none;
-  font-size: .875rem;
+.project h3 a {
+  font-size: 1.5rem;
   font-weight: 400;
-  padding: 1rem;
+  line-height: 1;
+  background: #fffbc1;
+  text-decoration: none;
 }
 
-.projects a:hover {
-  color: var(--font);
-}
-
-.projects a:hover h3 {
+.project h3 a:hover {
   text-decoration: underline;
 }
 
-.projects h3 {
-  font-size: 1rem;
-  font-weight: 600;
-}
 
 /* Article Colors */
 .article-people {
