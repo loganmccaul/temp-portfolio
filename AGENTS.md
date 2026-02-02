@@ -14,13 +14,14 @@ Article conventions and patterns
 - Each article is a standalone HTML file inside `writings/`.
 - Typical head/body pattern:
   - Head links to `../styles.css`, preloads fonts, and may include an article stylesheet (e.g., `article-animation.css`).
-  - Body contains a header linking back to `../index.html`, a `<main>` with `article > h1` for the title and a `<time datetime="YYYY-MM-DD">` for the publish date.
+  - Body contains a header linking back to `../index.html`, a `<main>` with `article > h1` for the title (using a class like `article-people`, `article-code`, or `article-data` for styling), and a `<time datetime="YYYY-MM-DD">` for the publish date.
 - Filenames typically include a slug and year (e.g., `this-website-is-less-than-100kbs-2025.html`).
 - Image and favicon paths are relative (e.g., `../images/...` from `writings/`).
+- Article category classes on `<h1>`: use `article-people`, `article-code`, or `article-data` to style the heading background color.
 
 Authoring workflow (how you currently write articles)
 1. Duplicate an existing article HTML file inside `writings/`.
-2. Update the `<h1>` text to the new title.
+2. Update the `<h1>` text to the new title and add the appropriate class (`article-people`, `article-code`, or `article-data`).
 3. Update the `<time datetime="..."></time>` element with the publish date.
 4. Rename the file to the desired slug (keep relative paths intact).
 5. Add a link to the new file from `index.html` inside the "Writings" section.
