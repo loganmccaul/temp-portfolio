@@ -96,7 +96,7 @@ body {
   color: var(--font, #161616);
   background: var(--background, #f4f4f4);
   margin: 3rem auto;
-  max-width: 450px;
+  max-width: 550px;
 }
 
 header {
